@@ -13,7 +13,7 @@ let particleVisible = true
 function setup() {
     createCanvas((w = windowWidth), (h = windowHeight))
 
-    grid = w / 70
+    grid = min(w, h) / 70
     n = w * 4
     rows = floor(h / grid) + 1
     cols = floor(w / grid) + 1
