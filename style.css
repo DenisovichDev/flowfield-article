@@ -19,3 +19,7 @@ body {
     text-transform: uppercase;
     cursor: pointer;
 }
+
+.btn:hover,  .btn:hover {
+    background-color: rgba(255, 255, 255, 0.347);
+}
