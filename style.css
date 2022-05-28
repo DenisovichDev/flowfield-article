@@ -13,6 +13,7 @@ body {
     border-radius: 0.5em;
     right: 2em;
     top: 2em;
+    font-size: 1rem;
     background-color: rgba(255, 255, 255, 0.237);
     color: rgb(0, 0, 0);
     font-family: 'Spline Sans Mono', monospace;
@@ -20,6 +21,6 @@ body {
     cursor: pointer;
 }
 
-.btn:hover,  .btn:hover {
+.btn:hover, .btn:focus {
     background-color: rgba(255, 255, 255, 0.347);
 }

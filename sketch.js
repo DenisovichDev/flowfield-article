@@ -8,10 +8,17 @@ const flowfield = []
 const points = []
 
 let grid, cols, rows, n
-let particleVisible = true
+
+const props = {
+    particleVisible: true,
+    drawBackground: true,
+    showFieldBack: false,
+    fieldBackVisible: false,
+}
 
 function setup() {
     createCanvas((w = windowWidth), (h = windowHeight))
+    fieldBuff = createGraphics(w, h)
 
     grid = min(w, h) / 70
     n = w * 4
@@ -25,9 +32,8 @@ function setup() {
         }
     }
 
-    for (let i = 0; i < n; i++) {
-        points[i] = createVector(random(w), random(h))
-    }
+    pointsInit()
+    createFieldBuffer()
 
     // noLoop();
 
@@ -35,11 +41,23 @@ function setup() {
 }
 
 function draw() {
-    if (!particleVisible) {
-        drawField()
+    if (!props.particleVisible) {
+        background(10)
+        tint(255, 200)
+        image(fieldBuff, 0, 0)
         return
     }
+    if (props.drawBackground) {
+        background(10)
+        props.drawBackground = false
+    }
     drawParticles()
+    if (props.showFieldBack && !props.fieldBackVisible) {
+        tint(255, 100)
+        image(fieldBuff, 0, 0)
+        props.fieldBackVisible = true
+        props.showFieldBack = false
+    }
 }
 
 function drawParticles() {
@@ -55,23 +73,37 @@ function drawParticles() {
     }
 }
 
-function drawField() {
-    background(10)
+function createFieldBuffer() {
     for (let j = 0; j < rows; j++) {
         for (let i = 0; i < cols; i++) {
             let index = i + j * cols
-            push()
-            translate(i * grid + grid / 2, j * grid + grid / 2)
-            rotate(flowfield[index].heading())
-            strokeWeight(0.5)
-            stroke(255)
-            line(0, 0, grid, 0)
-            circle(grid, 0, 1)
-            pop()
+            fieldBuff.push()
+            fieldBuff.translate(i * grid + grid / 2, j * grid + grid / 2)
+            fieldBuff.rotate(flowfield[index].heading())
+            fieldBuff.strokeWeight(0.5)
+            fieldBuff.stroke(255)
+            fieldBuff.line(0, 0, grid, 0)
+            fieldBuff.fill(255)
+            fieldBuff.circle(grid, 0, 1)
+            fieldBuff.pop()
         }
     }
 }
 
 function keyPressed() {
-    if (keyCode == 81) particleVisible = !particleVisible
+    if (keyCode == 81) {
+        props.particleVisible = !props.particleVisible
+        if (props.particleVisible) {
+            props.drawBackground = true
+            pointsInit()
+        }
+        props.fieldBackVisible = false
+    }
+    if (keyCode == 87) props.showFieldBack = !props.showFieldBack
+}
+
+function pointsInit() {
+    for (let i = 0; i < n; i++) {
+        points[i] = createVector(random(w), random(h))
+    }
 }
